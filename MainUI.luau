@@ -398,7 +398,7 @@ function Library.CreateNoti(Setting)
 	end)
 end
 function Library.CreateMain(Setting)
-	local TitleNameMain = tostring(Setting.Title) or "SeaUI"
+	local TitleNameMain = tostring(Setting.Title) or "Kiwii Hub"
 	getgenv().MainDesc = Setting.Desc or ""
 	local djtmemay = false
 	cac = false

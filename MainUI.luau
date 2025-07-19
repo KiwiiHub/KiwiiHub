@@ -296,13 +296,13 @@ function Library.CreateNoti(Setting)
 	local colorG = tostring(Library_Function.Getcolor(getgenv().UIColor['Title Text Color'])[2])
 	local colorB = tostring(Library_Function.Getcolor(getgenv().UIColor['Title Text Color'])[3])
 	local color = colorR .. ',' .. colorG .. ',' .. colorB
-	TextLabelNoti.Text = "<font color=\"rgb(" .. color .. ")\">SeaUI</font> " .. getgenv().TitleNameNoti
+	TextLabelNoti.Text = "<font color=\"rgb(" .. color .. ")\">Kiwii </font>Hub" .. getgenv().TitleNameNoti
 	table.insert(UpdateCallBack["Title Text Color"], function()
 		local colorR = tostring(Library_Function.Getcolor(getgenv().UIColor['Title Text Color'])[1])
 		local colorG = tostring(Library_Function.Getcolor(getgenv().UIColor['Title Text Color'])[2])
 		local colorB = tostring(Library_Function.Getcolor(getgenv().UIColor['Title Text Color'])[3])
 		local color = colorR .. ',' .. colorG .. ',' .. colorB
-		TextLabelNoti.Text = "<font color=\"rgb(" .. color .. ")\">SeaUI</font> " .. getgenv().TitleNameNoti
+		TextLabelNoti.Text = "<font color=\"rgb(" .. color .. ")\">Kiwii </font>Hub" .. getgenv().TitleNameNoti
 	end)
 	TextLabelNoti.Name = "TextLabelNoti"
 	TextLabelNoti.Parent = Topnoti
@@ -670,13 +670,13 @@ function Library.CreateMain(Setting)
 	local colorG = tostring(Library_Function.Getcolor(getgenv().UIColor['Title Text Color'])[2])
 	local colorB = tostring(Library_Function.Getcolor(getgenv().UIColor['Title Text Color'])[3])
 	local color = colorR .. ',' .. colorG .. ',' .. colorB
-	TextLabelMain.Text = "<font color=\"rgb(" .. color .. ")\">SeaUI</font> " .. getgenv().MainDesc
+	TextLabelMain.Text = "<font color=\"rgb(" .. color .. ")\">Kiwii </font>Hub" .. getgenv().MainDesc
 	table.insert(UpdateCallBack["Title Text Color"], function()
 		local colorR = tostring(Library_Function.Getcolor(getgenv().UIColor['Title Text Color'])[1])
 		local colorG = tostring(Library_Function.Getcolor(getgenv().UIColor['Title Text Color'])[2])
 		local colorB = tostring(Library_Function.Getcolor(getgenv().UIColor['Title Text Color'])[3])
 		local color = colorR .. ',' .. colorG .. ',' .. colorB
-		TextLabelMain.Text = "<font color=\"rgb(" .. color .. ")\">SeaUI</font> " .. getgenv().MainDesc
+		TextLabelMain.Text = "<font color=\"rgb(" .. color .. ")\">Kiwii </font>Hub" .. getgenv().MainDesc
 	end)
 	SettionMain.Name = "SettionMain"
 	SettionMain.Parent = TopMain

@@ -4,6 +4,9 @@ if getgenv().Tvk then
 			if v.Name == "SeaUI" then
 				v:Destroy()
 			end
+			if game.CoreGui:FindFirstChild("SeaUI_Toggle") then
+				game.CoreGui.SeaUI_Toggle:Destroy()
+			end
 		end
 	end
 end
@@ -202,9 +205,10 @@ Library_Function.GetIMG = function(url)
 	end
 	return returnimage
 end
+local visiubkegyu = true
 Library_Function.Gui = Instance.new('ScreenGui')
 Library_Function.Gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-Library_Function.Gui.Name = 'Kiwii Hub'
+Library_Function.Gui.Name = 'SeaUI'
 getgenv().ReadyForGuiLoaded = false
 spawn(function()
 	Library_Function.Gui.Enabled = false
@@ -213,6 +217,45 @@ spawn(function()
 	until getgenv().ReadyForGuiLoaded
 	Library_Function.Gui.Enabled = true
 end)
+-- Gui to Lua
+-- Version: 3.2
+
+-- Instances:
+
+local ScreenGui = Instance.new("ScreenGui")
+local ImageButton = Instance.new("ImageButton")
+local UICorner = Instance.new("UICorner")
+
+--Properties:
+
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+ScreenGui.Name = "SeaUI_Toggle"
+ImageButton.Parent = ScreenGui
+ImageButton.BackgroundColor3 = Color3.fromRGB(72, 72, 72)
+ImageButton.BackgroundTransparency = 0.600
+ImageButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+ImageButton.BorderSizePixel = 0
+ImageButton.Position = UDim2.new(0.472000003, 0, 0.0160000008, 0)
+ImageButton.Size = UDim2.new(0, 50, 0, 50)
+ImageButton.Image = "rbxassetid://114720080732665"
+
+UICorner.CornerRadius = UDim.new(0, 4)
+UICorner.Parent = ImageButton
+
+-- Scripts:
+
+local function NXPJF_fake_script() -- ImageButton.LocalScript 
+	local script = Instance.new('LocalScript', ImageButton)
+
+	local abc = script.Parent
+	abc.MouseButton1Click:Connect(function()
+		visiubkegyu = not visiubkegyu
+		Library_Function.Gui.Enabled = not visiubkegyu
+	end)
+end
+coroutine.wrap(NXPJF_fake_script)()
+
 Library_Function.NotiGui = Instance.new('ScreenGui')
 Library_Function.NotiGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 Library_Function.NotiGui.Name = 'SeaUI Notification'

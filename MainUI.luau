@@ -464,7 +464,7 @@ function Library.CreateMain(Setting)
 	Main.BackgroundTransparency = 1.000
 	Main.Position = UDim2.new(0.5, 0, 0.5, 0)
 	Main.AnchorPoint = Vector2.new(0.5, 0.5)
-	Main.Size = UDim2.new(0, 400, 0, 200)
+	Main.Size = UDim2.new(0, 500, 0, 300)
 	makeDraggable(Main, Main)
 	maingui.Name = "maingui"
 	maingui.Parent = Main
@@ -712,7 +712,7 @@ function Library.CreateMain(Setting)
 	PageControl.Name = "Background1"
 	PageControl.Parent = Concacmain
 	PageControl.Position = UDim2.new(0, 5, 0, 0)
-	PageControl.Size = UDim2.new(0, 180, 0, 325)
+	PageControl.Size = UDim2.new(0, 180, 0, 265)
 	PageControl.BackgroundTransparency = getgenv().UIColor["Background 1 Transparency"]
 	table.insert(UpdateCallBack["Background 1 Transparency"], function()
 		PageControl.BackgroundTransparency = getgenv().UIColor["Background 1 Transparency"]
@@ -759,7 +759,7 @@ function Library.CreateMain(Setting)
 	MainPage.BackgroundTransparency = 1.000
 	MainPage.ClipsDescendants = true
 	MainPage.Position = UDim2.new(0, 190, 0, 0)
-	MainPage.Size = UDim2.new(0, 435, 0, 325)
+	MainPage.Size = UDim2.new(0, 305, 0, 265)
 	UIPage.Name = "UIPage"
 	UIPage.Parent = MainPage
 	UIPage.FillDirection = Enum.FillDirection.Vertical
@@ -2554,7 +2554,7 @@ function Library.CreateMain(Setting)
 			local SectionList = Instance.new("UIListLayout")
 			Section.Name = Section_Name .. "_Dot"
 			Section.Parent = PageList
-			Section.Size = UDim2.new(0, 415, 0, 100)
+			Section.Size = UDim2.new(0, 295, 0, 100)
 			Section.BackgroundColor3 = getgenv().UIColor["Background 3 Color"]
 			table.insert(UpdateCallBack["Background 3 Color"], function()
 				Section.BackgroundColor3 = getgenv().UIColor["Background 3 Color"]

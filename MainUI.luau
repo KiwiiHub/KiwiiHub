@@ -231,6 +231,7 @@ local UICorner = Instance.new("UICorner")
 ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 ScreenGui.Name = "SeaUI_Toggle"
+ScreenGui.IgnoreGuiInset = true
 ImageButton.Parent = ScreenGui
 ImageButton.BackgroundColor3 = Color3.fromRGB(72, 72, 72)
 ImageButton.BackgroundTransparency = 0.600
@@ -239,7 +240,8 @@ ImageButton.BorderSizePixel = 0
 ImageButton.Position = UDim2.new(0.472000003, 0, 0.0160000008, 0)
 ImageButton.Size = UDim2.new(0, 50, 0, 50)
 ImageButton.Image = "rbxassetid://114720080732665"
-
+ImageButton.Active = true
+ImageButton.Draggable = true
 UICorner.CornerRadius = UDim.new(0, 4)
 UICorner.Parent = ImageButton
 

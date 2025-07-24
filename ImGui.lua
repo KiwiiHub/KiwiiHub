@@ -166,13 +166,12 @@ Top.ImageColor3 = Color3.new(0.160784, 0.290196, 0.478431)
 Top.ScaleType = Enum.ScaleType.Slice
 Top.SliceCenter = Rect.new(12, 12, 12, 12)
 
--- [MODIFIED] Move content area to the right of the new tab bar
 Tabs.Name = "Tabs"
 Tabs.Parent = Window
 Tabs.BackgroundColor3 = Color3.new(1, 1, 1)
 Tabs.BackgroundTransparency = 1
-Tabs.Position = UDim2.new(0, 130, 0, 30) -- Move X to 130 (15 padding + 100 tab bar + 15 padding)
-Tabs.Size = UDim2.new(1, -145, 1, -45) -- Adjust width and height to fit
+Tabs.Position = UDim2.new(0, 15, 0, 60)
+Tabs.Size = UDim2.new(1, -30, 1, -60)
 
 Title.Name = "Title"
 Title.Parent = Window
@@ -186,13 +185,12 @@ Title.TextColor3 = Color3.new(1, 1, 1)
 Title.TextSize = 14
 Title.TextXAlignment = Enum.TextXAlignment.Left
 
--- [MODIFIED] Reposition and resize the tab bar to be on the left
 TabSelection.Name = "TabSelection"
 TabSelection.Parent = Window
 TabSelection.BackgroundColor3 = Color3.new(1, 1, 1)
 TabSelection.BackgroundTransparency = 1
-TabSelection.Position = UDim2.new(0, 15, 0, 30) -- Position below title bar, 15px from left
-TabSelection.Size = UDim2.new(0, 100, 1, -45) -- 100px wide, full height minus padding
+TabSelection.Position = UDim2.new(0, 15, 0, 30)
+TabSelection.Size = UDim2.new(1, -30, 0, 25)
 TabSelection.Visible = false
 TabSelection.Image = "rbxassetid://2851929490"
 TabSelection.ImageColor3 = Color3.new(0.145098, 0.14902, 0.156863)
@@ -205,19 +203,17 @@ TabButtons.BackgroundColor3 = Color3.new(1, 1, 1)
 TabButtons.BackgroundTransparency = 1
 TabButtons.Size = UDim2.new(1, 0, 1, 0)
 
--- [MODIFIED] Change layout to arrange tabs vertically
 UIListLayout.Parent = TabButtons
-UIListLayout.FillDirection = Enum.FillDirection.Vertical
+UIListLayout.FillDirection = Enum.FillDirection.Horizontal
 UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UIListLayout.Padding = UDim.new(0, 2)
 
--- [MODIFIED] Reorient separator line to be vertical
 Frame.Parent = TabSelection
 Frame.BackgroundColor3 = Color3.new(0.12549, 0.227451, 0.372549)
 Frame.BorderColor3 = Color3.new(0.105882, 0.164706, 0.207843)
 Frame.BorderSizePixel = 0
-Frame.Position = UDim2.new(1, -2, 0, 0) -- Position on the right edge
-Frame.Size = UDim2.new(0, 2, 1, 0)     -- Make it 2px wide and full height
+Frame.Position = UDim2.new(0, 0, 1, 0)
+Frame.Size = UDim2.new(1, 0, 0, 2)
 
 Tab.Name = "Tab"
 Tab.Parent = Prefabs
@@ -1107,8 +1103,7 @@ function library:AddWindow(title, options)
 				local new_button = Prefabs:FindFirstChild("TabButton"):Clone()
 				new_button.Parent = tab_buttons
 				new_button.Text = tab_name
-				-- [MODIFIED] Set the size to fill the width of the new vertical tab bar
-				new_button.Size = UDim2.new(1, 0, 0, 25)
+				new_button.Size = UDim2.new(0, gNameLen(new_button), 0, 20)
 				new_button.ZIndex = new_button.ZIndex + (windows * 10)
 				new_button:GetChildren()[1].ZIndex = new_button:GetChildren()[1].ZIndex + (windows * 10)
 
@@ -1121,14 +1116,14 @@ function library:AddWindow(title, options)
 					for i, v in next, tab_buttons:GetChildren() do
 						if not (v:IsA("UIListLayout")) then
 							v:GetChildren()[1].ImageColor3 = Color3.fromRGB(52, 53, 56)
-							-- [MODIFIED] We don't need to resize on deselection for vertical tabs, but you could if you want.
+							Resize(v, {Size = UDim2.new(0, v.AbsoluteSize.X, 0, 20)}, options.tween_time)
 						end
 					end
 					for i, v in next, tabs:GetChildren() do
 						v.Visible = false
 					end
-					
-					-- [MODIFIED] No resize needed on selection, just color change.
+
+					Resize(new_button, {Size = UDim2.new(0, new_button.AbsoluteSize.X, 0, 25)}, options.tween_time)
 					new_button:GetChildren()[1].ImageColor3 = Color3.fromRGB(73, 75, 79)
 					new_tab.Visible = true
 				end
@@ -1254,6 +1249,7 @@ function library:AddWindow(title, options)
 						return textbox
 					end
 
+					--- [START] MOBILE-FRIENDLY SLIDER FIX ---
 					function tab_data:AddSlider(slider_text, callback, slider_options)
 						local slider_data = {}
 
@@ -1282,28 +1278,38 @@ function library:AddWindow(title, options)
 							local isDragging = false
 
 							local function updateSliderFromPosition(inputPos)
+								-- Calculate the horizontal position of the input relative to the slider
 								local relativeX = inputPos.X - slider.AbsolutePosition.X
+								-- Clamp the value between 0 and the slider's width, then get its percentage
 								local percentage = math.clamp(relativeX / slider.AbsoluteSize.X, 0, 1)
-								Resize(indicator, {Size = UDim2.new(percentage, 0, 0, 20)}, 0)
 
+								-- Update the indicator bar
+								Resize(indicator, {Size = UDim2.new(percentage, 0, 0, 20)}, 0) -- Tween time 0 for responsiveness
+
+								-- Calculate the actual value based on min/max options
 								local maxv = slider_options.max
 								local minv = slider_options.min
 								local diff = maxv - minv
 								local sel_value = math.floor(((diff / 100) * (percentage * 100)) + minv)
 
+								-- Update text and fire callback
 								value.Text = tostring(sel_value)
 								pcall(callback, sel_value)
 							end
 
 							UIS.InputBegan:Connect(function(inputObject, gameProcessed)
 								if gameProcessed or dropdown_open or slider_options.readonly then return end
+
+								-- Check for both Mouse and Touch input
 								if inputObject.UserInputType == Enum.UserInputType.MouseButton1 or inputObject.UserInputType == Enum.UserInputType.Touch then
 									local pos = inputObject.Position
 									local sliderPos = slider.AbsolutePosition
 									local sliderSize = slider.AbsoluteSize
+
+									-- Check if the input began within the slider's bounds
 									if pos.X >= sliderPos.X and pos.X <= sliderPos.X + sliderSize.X and pos.Y >= sliderPos.Y and pos.Y <= sliderPos.Y + sliderSize.Y then
 										isDragging = true
-										Window.Draggable = false
+										Window.Draggable = false -- Prevent window from dragging while using slider
 										updateSliderFromPosition(inputObject.Position)
 									end
 								end
@@ -1311,15 +1317,17 @@ function library:AddWindow(title, options)
 
 							UIS.InputChanged:Connect(function(inputObject, gameProcessed)
 								if gameProcessed then return end
+								-- Update slider only when dragging
 								if isDragging and (inputObject.UserInputType == Enum.UserInputType.MouseButton1 or inputObject.UserInputType == Enum.UserInputType.Touch) then
 									updateSliderFromPosition(inputObject.Position)
 								end
 							end)
 
 							UIS.InputEnded:Connect(function(inputObject)
+								-- Stop dragging when input is released
 								if isDragging and (inputObject.UserInputType == Enum.UserInputType.MouseButton1 or inputObject.UserInputType == Enum.UserInputType.Touch) then
 									isDragging = false
-									Window.Draggable = true
+									Window.Draggable = true -- Re-enable window dragging
 								end
 							end)
 						end
@@ -1330,10 +1338,12 @@ function library:AddWindow(title, options)
 							local maxv = slider_options.max
 							local minv = slider_options.min
 							
+							-- Clamp the input value within the min/max range
 							new_value = math.clamp(new_value, minv, maxv)
 							
 							local percentage = (new_value - minv) / (maxv - minv)
 							
+							-- Ensure percentage is valid to avoid NaN errors
 							if percentage ~= percentage then percentage = 0 end
 
 							Resize(indicator, {Size = UDim2.new(percentage, 0, 0, 20)}, options.tween_time)
@@ -1347,6 +1357,7 @@ function library:AddWindow(title, options)
 						
 						return slider_data, slider
 					end
+					--- [END] MOBILE-FRIENDLY SLIDER FIX ---
 
 					function tab_data:AddKeybind(keybind_name, callback, keybind_options)
 						local keybind_data = {}
